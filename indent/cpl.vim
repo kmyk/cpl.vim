@@ -10,7 +10,7 @@ endif
 let b:did_indent = 1
 
 setlocal indentexpr=GetCplIndent()
-setlocal indentkeys+=0=right,0=left,0=end,0=let,;
+setlocal indentkeys+=0=right,0=left,0=end,0=let,<:>,-,;
 
 if exists("*GetCplIndent")
     finish
@@ -40,10 +40,10 @@ function! GetCplIndent()
     elseif getline(v:lnum) =~# '^\s*\(right\|left\|end\)\>'
         return 0
     elseif IsInObjectDecl(v:lnum)
-        if getline(v:lnum) =~# ':'
-            return &l:shiftwidth
-        else
+        if getline(v:lnum) =~# '^\s*[:-]'
             return 2 * &l:shiftwidth
+        else
+            return &l:shiftwidth
         endif
     else
         if plnum == 0
